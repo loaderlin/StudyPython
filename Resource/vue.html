@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Vue 示例</title>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="book in books">
+                {{ book.name }}
+            </li>
+        </ul>
+        <input type="text" v-model="username" placeholder="your name" />
+        <p>{{ username }}</p>
+        <p>{{ a / 2  }}</p>
+        <p> {{ a > 1 ? 'OK' : 'No'}}</p>
+        <p>当前时间: {{ date }}</p>
+        <p>格式化后 当前时间: {{ date | formatDate }}</p>
+        <span v-html="link"></span>
+        <span v-pre>{{data.books}}</span>
+        <span >{{ text.split(',').reverse().join(',') }}</span>
+        <span >{{ reversedText }}</span>
+        <!-- 注意，不使用计算属性时，在方法中定义要带() -->
+        <span >{{ reversedTextNumber() }}</span>
+        <hr/>
+        <span v-if="show">显示这段话</span>
+        <!-- <button v-on:dblclick="handleClose">点击隐藏上面一段话</button> -->
+        <button v-on:click="show = false">点击隐藏上面一段话</button>
+        <hr/>
+        <!-- <a v-bind:href="url">www.flycode.me</a>
+        <img v-bind:src="imgUrl" alt=""> -->
+            
+        <a :href="url">www.flycode.me</a>
+        <img :src="imgUrl" alt="">
+        <hr/>
+        <p>姓名： {{ fullName }}</p>
+
+        <div class='static'　:class="{ 'active' : isActive, 'error' : isError } "></div>
+        <div :class="classes"></div>
+
+        <div :class="[activeCls, errorCls]"> </div>
+        <div :class="[isActive ? activeCls : '' , errorCls]"> </div>
+        <div :class="[{'active' : isActive }, errorCls]"> </div>
+
+        <div :style="{'color': color, 'fontSize': fontSize + 'px' }"> 文本 </div>
+        <div :style="styles"> 文本 </div>
+        
+        <div id="app" v-clock>
+            <span v-once>{{ message }}</span>
+        </div>
+              
+        <span v-if="status == 1">状态为1时 显示这段话</span>
+        <span v-else-if="status == 2">状态为2时 显示这段话</span>
+        <span v-else>其他情况 显示这段话</span>
+
+        <template v-if="type == 'name'">
+            <label for="" >your name</label>
+            <input type="text" placeholder="你的名字" key="name-input"/>
+        </template>    
+        <template v-else>
+            <label for="" >your Email</label>
+            <input type="text" placeholder="你的邮箱" key="email-input"/>
+        </template>    
+        <button @click="handleToggleClick">切换输入类型</button>
+        
+        <div v-show="status === 2">display 显示这段文字</div>
+    </div>
+
+    <script src="https://unpkg.com/vue/dist/vue.min.js" ></script>
+    <script>
+        var app = new Vue({
+            // el:　'#app',
+            el: document.getElementById('app'),
+            data:{
+                books : [
+                    { name:'中华上下五千年'},
+                    { name:'世界上下一万年'},
+                    { name:'十万个为什么'},
+                ],
+                username : '',
+                a :　10,
+                date: new Date(),
+                link: '<a href="#"> 这是一个链接 </a>',
+                text: '123,456',
+                show: true,
+                url: 'http://www.flycode.me',
+                imgUrl: 'http://static.v5.javamall.com.cn/attachment/goods/201511240139201504_thumbnail.jpg',
+
+                firstName: 'Jack',
+                lastName: 'Green',
+
+                isActive: true,
+                isError: false,
+                // error: false,
+                // error: null,
+                error: {
+                    type: 'fail'
+                },
+                
+                activeCls: 'active',
+                errorCls: 'error',
+
+                color: 'red',
+                fontSize: 14,
+                styles: {
+                    color: 'red',
+                    fontSize: 14 + 'px',
+                },
+                message: 'hello world',
+                status: 2,
+                type : 'name',
+            },
+
+            methods: {
+                handleClose: function () {
+                    this.show = false;
+                },
+                reversedTextNumber: function () {
+                    //这里的this指向的是当前的Vue实例
+                    return this.text.split(',').reverse().join(',')
+                },
+                handleToggleClick: function() {
+                    this.type = this.type === 'name' ? 'mail' : 'name';
+                }
+            },
+
+            computed: {
+                classes: function () {
+                    return {
+                        active: this.isActive && !this.error,
+                        'text-fail': this.error && this.error.type === 'fail'
+                    } 
+                },
+                reversedText: function () {
+                    //这里的this指向的是当前的Vue实例
+                    return this.text.split(',').reverse().join(',')
+                },
+                fullName: {
+                    // getter 用于读取
+                    get: function () {
+                        return this.firstName + ' ' + this.lastName; 
+                    },
+                    // 写入时触发
+                    set: function (newValue) {
+                        var names = newValue.split(' ');
+                        this.firstName = names[0];
+                        this.lastName = names[names.length - 1];
+                    }
+                }
+            },
+
+            created: function () {
+                // console.log(this.a); //2
+                
+            },
+            mounted: function () {
+                console.log(this.$el) // <div id="app"></div>
+                var _this = this;
+                this.timer = setInterval(function () {
+                    _this.date = new Date();
+                }, 1000)
+            },
+            beforeDestory: function () {
+                if (this.timer) {
+                    clearInterval(this.timer);
+                }
+            }
+        })
+        console.log(app.a)
+    </script>
+</body>
+</html>
