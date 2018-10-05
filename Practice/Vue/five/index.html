@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
     <div id="app" v-clock>
@@ -13,6 +14,8 @@
             <table>
                 <thead>
                     <tr>
+                        <th><input type="checkbox" @change="checkAll()" :checked="checked"/></th>
+                        <th></th>
                         <th>Good name</th>
                         <th>Good price</th>
                         <th>Good num</th>
@@ -21,6 +24,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="(item, index) in list">
+                        <td><input type="checkbox" v-model="checkList" :value="index"></td>
                         <td>{{ index + 1 }}</td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.price }}</td>
