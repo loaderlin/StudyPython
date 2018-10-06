@@ -6,11 +6,54 @@
 </head>
 <body>
     <div id="app">
-        <!-- <ul>
+
+        <select name="" id="" v-model="selected">
+            <option :value="{ number: 123 }">123</option>
+        </select>
+
+        <p>{{ selected.number }}</p>
+
+        <input type="checkbox" name="" id="toggle-id" v-model="toggle" :true-value="value1" :false-value="value2">
+        <label for="toggle-id">复选框</label>
+        <p>{{ toggle }}</p>
+        <p>{{ value1 }}</p>
+        <p>{{ value2 }}</p>
+
+        <input type="radio" name="" id="" v-model="picked" :value="value">
+        <label for="">单选框</label>
+        <p>{{ picked }}</p>
+        <p>{{ value }}</p>
+
+        <input type="radio" id="radiolog" name="radiolog" :checked="picked"/>
+        <label for="radiolog">单选框</label>
+
+        <input type="checkbox" v-model="pickedValue" name="" value="html" id="html" />
+        <label for="html">HTML</label>
+
+        <input type="checkbox" v-model="pickedValue" name="" value="js" id="js" />
+        <label for="js">JavaScript</label>
+
+        <input type="checkbox" v-model="pickedValue" name="" value="css" id="css" />
+        <label for="css">CSS</label>
+
+        <p>{{ pickedValue }}</p>
+
+        <select name="" id="" v-model="selected" multiple>
+            <option value="html">HTML</option> 
+            <option>JavaScript</option>
+            <option>Css</option>
+        </select>
+
+        <p>{{ selected }}</p>
+
+        <textarea @input="handleInput" name="" id="" cols="30" rows="10"></textarea>
+        <input type="text" v-model="message" placeholder="输入">
+        <p>输入的内容是{{ message }}</p>
+        <ul>
             <li v-for="book in books">
                 {{ book.name }}
             </li>
-        </ul> -->
+        </ul>
         <input type="text" v-model="username" placeholder="your name" />
         <p>{{ username }}</p>
         <p>{{ a / 2  }}</p>
@@ -90,6 +133,19 @@
             // el:　'#app',
             el: document.getElementById('app'),
             data:{
+                
+
+                toggle: false,
+                value1: 'a',
+                value2: 'b',
+                
+                picked: false,
+                value: 123,
+                // selected: ['Css', 'html'],
+                selected: '',
+                // picked: false,
+                pickedValue: ['js', 'html'],
+                message: '',
                 books : [
                     { name:'中华上下五千年'},
                     { name:'世界上下一万年'},
@@ -157,6 +213,9 @@
                 handleAdd: function (counter) {
                     counter = counter || 1
                     this.counter += counter;
+                },
+                handleInput: function(e) {
+                    return this.message = e.target.value;
                 }
             },
 
@@ -199,18 +258,18 @@
                 // console.log(this.a); //2
                 
             },
-            mounted: function () {
-                console.log(this.$el) // <div id="app"></div>
-                var _this = this;
-                this.timer = setInterval(function () {
-                    _this.date = new Date();
-                }, 1000)
-            },
-            beforeDestory: function () {
-                if (this.timer) {
-                    clearInterval(this.timer);
-                }
-            },
+            // mounted: function () {
+            //     console.log(this.$el) // <div id="app"></div>
+            //     var _this = this;
+            //     this.timer = setInterval(function () {
+            //         _this.date = new Date();
+            //     }, 1000)
+            // },
+            // beforeDestory: function () {
+            //     if (this.timer) {
+            //         clearInterval(this.timer);
+            //     }
+            // },
         });
         app.books = app.books.filter(function (item){
             return item.name.match(/JavaScript/);
