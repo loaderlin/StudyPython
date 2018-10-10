@@ -6,9 +6,40 @@
 </head>
 <body>
     <div id="app">
+        <!-- <table>
+            <tbody is="my-component"></tbody>
+        </table> -->
+        <my-component message="来之父组件的数据"> </my-component>
+        <my-component warning-text="提示信息"> </my-component>
+        <input type="text" v-model="msg"/>
+        <my-component :message="msg" @input="handleInput"> </my-component>
+        <my-component :init-count="100"></my-component>
+        <!-- <Card style="width: 350px;">
+            <p slot="title">  与 xxx 聊天中</p>
+            <a href="#" slot="extra">
+                <Icon type="android-close" size="18"></Icon>
+            </a>
+            <div style="height: 100px;">
 
+            </div>
+            <div>
+                <Row :gutter="16">
+                    <i-col span="17">
+                        <i-input v-model="value" placeholder="请输入...">
+
+                        </i-input>
+                    </i-col>
+                    <i-col>
+                        <i-button type="primary" icon="paper-airplane">
+                            发送
+                        </i-button>
+                    </i-col>
+                </Row>
+            </div>
+        </Card> -->
         <select name="" id="" v-model="selected">
-            <option :value="{ number: 123 }">123</option>
+            <!-- <option :value="{ number: 123 }">123</option> -->
+            <option v-for="option in books" :value="option.name">{{option.author}}</option>
         </select>
 
         <p>{{ selected.number }}</p>
@@ -129,11 +160,18 @@
 
     <script src="https://unpkg.com/vue/dist/vue.min.js" ></script>
     <script>
+        var Child = {
+            template : '<div> 局部组件 </div>'
+        };
+        var data = {
+            counter: 0
+        };
         var app = new Vue({
             // el:　'#app',
             el: document.getElementById('app'),
             data:{
                 
+                msg: '',
 
                 toggle: false,
                 value1: 'a',
@@ -198,7 +236,9 @@
                 ],
                 counter: 0,
             },
-
+            component: {
+                'my-component': Child,
+            },
             methods: {
                 handleClose: function () {
                     this.show = false;
@@ -273,6 +313,52 @@
         });
         app.books = app.books.filter(function (item){
             return item.name.match(/JavaScript/);
+        });
+        
+        Vue.component('my-component', {
+            // template: '<div>{{ msg }}</div>',
+            // data: function() {
+            //     return {
+            //         msg: '组件内容', 
+            //     }
+            // }
+            // template: '<button @click="counter++">{{ counter }}</button>',
+            // data: function() {
+            //     return data;
+            // }
+
+            // template: '<button @click="counter++"> {{ counter }} </button>',
+            // data: function () {
+            //     return {
+            //         counter: 0
+            //     };
+            // }
+
+            // props: ['message'],
+            // template: '<div>{{ message }}</div>'
+
+            // props: ['warningText'],
+            // template: '<div> {{ warningText }} </div>'
+
+            // props: ['message'],
+            // template: '<div>{{ message }}</div>'
+        
+            props: ['initCount'],
+            // template: '<div> {{ count }} </div>',
+            template: '<div :style="style"> 组件内容 </div>',
+            data: function () {
+                return {
+                    count: this.initCount,
+                }
+            },
+            computed: {
+                style: function () {
+                    return {
+                        width: this.initCount + 'px',
+                        
+                    }
+                }
+            }
         });
         // Vue.set(app.books, 2, {
         //     name: '<CSS 泄密>',
