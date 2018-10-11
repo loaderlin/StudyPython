@@ -20,6 +20,18 @@
         >
         </my-component> -->
 
+        <child-component>
+            <p>替代分发内容</p>
+            <p>替代分发内容</p>
+            <div slot="footer">底部信息</div>
+        </child-component>
+
+        <!-- <child-component>
+            <template scope="props">
+                <p>来自父组件的内容</p>
+                <p>{{ props.msg }}</p>
+            </template>
+        </child-component> -->
     </div>
 
     <script src="https://unpkg.com/vue/dist/vue.min.js" ></script>
@@ -51,6 +63,15 @@
                 updateValue: function() {
                     this.$emit('input', event.target.value);
                 }
+            }
+        });
+
+        Vue.component('child-component', {
+            template: '<div> <slot><p> 显示默认内容 </p></slot> <slot name="footer">默认底部信息</slot><slot msg="来自子组件的内容"/></div> ',
+            mounted: function (){
+                var footer = this.$slots.footer;
+                console.log(footer);
+                console.log(footer[0].elm.innerHTML);
             }
         });
 
