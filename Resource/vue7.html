@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Vue 示例</title>
+</head>
+<body>
+    <div id="app">
+        <p>总数 {{  total }}</p>
+        <!-- <my-component
+            @increase="handleGetTotal"
+            @reduce="handleGetTotal"
+        >
+        </my-component> -->
+        <my-component v-model="total">
+        </my-component>
+        <button @click="handleReduce"> -1 </button>
+        <!-- <my-component
+            @input="handleGetTotal"
+        >
+        </my-component> -->
+
+    </div>
+
+    <script src="https://unpkg.com/vue/dist/vue.min.js" ></script>
+    <script>
+        var data = {
+            counter: 0
+        };
+        Vue.component('my-component', {
+            props: ['value'],
+            // template: '<div> <button @click="handleIncrease"> +1 </button> <button @click="handleReduce"> -1 </button></div>',        
+            template: '<input :value="value" @input="updateValue"/>',        
+            data: function(){
+                return data
+                // return {
+                //     counter: 0
+                // }
+            },
+            methods: {
+                handleIncrease: function(){
+                    this.counter++;
+                    // this.$emit('increase', this.counter);
+                    this.$emit('input', this.counter);
+                },
+                handleReduce: function() {
+                    this.counter--;
+                    // this.$emit('reduce', this.counter);
+                    this.$emit('input', this.counter);
+                },
+                updateValue: function() {
+                    this.$emit('input', event.target.value);
+                }
+            }
+        });
+
+        var app = new Vue({
+            el:　'#app',
+            data:{
+                total: 0,                
+                books: [
+                    {name : 'Vue 实战', author: 'rocky'},
+                    {name : 'D JavaScript 实战', author: 'rocky'},
+                    {name : 'C JavaScript 实战1231', author: 'rocky'},
+                    {name : 'B JavaScript 实战12', author: 'rocky'},
+                    {name : 'A JavaScript 实战12', author: 'rocky'},
+                ],
+            },
+            component: {
+            },
+            methods: {
+                // handleGetTotal: function (total){
+                //     this.total = total;
+                // }
+                handleGetTotal: function (total){
+                    this.total = total;
+                },
+                handleReduce: function() {
+                    this.total--;
+                }
+            },
+            computed: { 
+            },
+            created: function () {
+            },
+            mounted: function () {
+            },
+            beforeDestory: function () {
+            },
+        });
+    </script>
+</body>
+</html>
