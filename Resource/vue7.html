@@ -20,11 +20,11 @@
         >
         </my-component> -->
 
-        <child-component>
+        <!-- <child-component>
             <p>替代分发内容</p>
             <p>替代分发内容</p>
             <div slot="footer">底部信息</div>
-        </child-component>
+        </child-component> -->
 
         <!-- <child-component>
             <template scope="props">
@@ -32,6 +32,23 @@
                 <p>{{ props.msg }}</p>
             </template>
         </child-component> -->
+
+        <child-component :count="1">
+
+        </child-component>
+
+        <child-component inline-template>
+            <div>
+                <h2>在父组件中定义子组件的模板</h2>
+                <p>{{ message }}</p>
+                <p>{{ msg }}</p>
+            </div>
+        </child-component>
+
+        <component :is="currentView"></component>
+        <button @click="handleChangeView('A')">切换到A</button>
+        <button @click="handleChangeView('B')">切换到B</button>
+        <button @click="handleChangeView('C')">切换到C</button>
     </div>
 
     <script src="https://unpkg.com/vue/dist/vue.min.js" ></script>
@@ -67,14 +84,32 @@
         });
 
         Vue.component('child-component', {
-            template: '<div> <slot><p> 显示默认内容 </p></slot> <slot name="footer">默认底部信息</slot><slot msg="来自子组件的内容"/></div> ',
-            mounted: function (){
-                var footer = this.$slots.footer;
-                console.log(footer);
-                console.log(footer[0].elm.innerHTML);
+            // template: '<div> <slot><p> 显示默认内容 </p></slot> <slot name="footer">默认底部信息</slot><slot msg="来自子组件的内容"/></div> ',
+            // mounted: function (){
+            //     var footer = this.$slots.footer;
+            //     console.log(footer);
+            //     console.log(footer[0].elm.innerHTML);
+            // },
+            
+            // name: 'child-component',
+            // props: {
+            //     count: {
+            //         type: Number,
+            //         default: 1
+            //     }
+            // },
+            // template: '<div class="child"> <child-component :count="count + 1" v-if=" count < 3"></child-component> </div>'
+            
+            data: function (){
+                return {
+                    msg: '在子组件声明的数据'
+                }
             }
         });
 
+        var Home = {
+            template: '<p> Welcome home! </p>'
+        };
         var app = new Vue({
             el:　'#app',
             data:{
@@ -86,8 +121,14 @@
                     {name : 'B JavaScript 实战12', author: 'rocky'},
                     {name : 'A JavaScript 实战12', author: 'rocky'},
                 ],
+                message: '在父组件声明的数据',
+                currentView: 'comA',
+                // currentView: Home
             },
-            component: {
+            components: {
+                comA: { template: '<div>组件A</div>'},
+                comB: { template: '<div>组件B</div>'},
+                comC: { template: '<div>组件C</div>'}
             },
             methods: {
                 // handleGetTotal: function (total){
@@ -98,6 +139,9 @@
                 },
                 handleReduce: function() {
                     this.total--;
+                },
+                handleChangeView: function (component){
+                    this.currentView = 'com' + component;
                 }
             },
             computed: { 
