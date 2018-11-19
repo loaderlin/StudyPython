@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="blog" :style="{fontSize: postFontSize + 'em' }">
+    <blog-post 
+        v-for="post in posts"
+        :key="post.id"
+        :post="post"
+        @crease="crease"
+        v-model="total"
+        :total.sync="title"
+    ></blog-post>
+    <p>num is {{total}}</p>
+    <p>Title is {{title}}</p> 
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+
+    var data = {
+        counter: 0
+    }
+Vue.component('blog-post', {
+    // props: ['post'],
+    props: {
+      post: Array,
+      title: String,
+      total: Number
+    },
+    template: `<div class="blog-post"> \
+        <h3> {{ post.title }}</h3> \
+        <div v-html="post.content"></div> \
+        <button @click="$emit('crease', 0.1)">click me </button> \
+        <button @click="handleClick"> Add 1</button> \
+        <button @click="updateTotal"> Update title</button>
+        </div >`,
+    data: function () {
+        return data
+    },
+    methods: {
+        handleClick: function () {
+            this.counter +=1,
+            this.$emit('input', this.counter)
+        },
+        updateTotal: function () {
+            this.$emit("update:total", "total"+ this.counter)
+        }
+    }
+})
+var vm = new Vue({
+    el: '#blog',
+    data: {
+        posts: [
+            {id: 1, title: 'blogpost'},
+            {id: 2, title: 'titlepost'}
+        ],
+        postFontSize: 1,
+        total: 0,
+        title: "Hello world"
+    },
+    methods: {
+        crease: function (numcount) {
+           this.postFontSize += numcount 
+        }
+    },
+})
+</script>
+</html>
