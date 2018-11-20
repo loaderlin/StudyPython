@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="app">
+    <child-component>
+        <!-- 父组件中使用了<template>元素，而且拥有一个scope="props"的特性，这里的props只是一个临时变量 就像v-for="item in items"里面的item一样 -->
+        <template scope="props">
+            <p>来自父组件的内容</p>
+            <p>{{ props.msg }}</p>
+        </template>
+    </child-component>
+</div>    
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    // 全局注册
+    Vue.component('child-component', {
+        template: `
+            <div class="container">
+                <slot msg="来自子组件的内容"></slot>
+            </div>
+        `
+    })
+    var app = new Vue({
+        el: '#app'
+    })
+</script>
+</html>

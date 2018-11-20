@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <my-list :books="books">
+            <template slot="book" scope="props">
+                <li>{{ props.bookName }}</li>
+            </template>
+        </my-list>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    Vue.component('my-list', {
+        props: {
+            books: {
+                type: Array,
+                default: function() {
+                    return [];
+                }
+            }
+        },
+        template: `
+            <ul>
+                <slot name="book" v-for="book in books" :book-name="book.name">
+                </slot>
+            </ul>
+        `
+    });
+    var app = new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                books: [
+                    {name: 'Vue.js'},
+                    {name: 'Vue.js org'},
+                    {name: 'Vue.js com'}
+                ]
+            }
+        }
+    })
+</script>
+</html>
