@@ -33,6 +33,7 @@
     // Vue.extend 是基础Vue构造器，创建一个“子类”，参数是一个包含组件选项的对象 
     var Component = Vue.extend({
         mixins: [myMixin],
+        customOption: 'customOption voication',
         data: function() {
             return {
                 message: 'goodbye',
@@ -44,6 +45,7 @@
             // { "message": "goodbye", "bar": "def", "foo": "rocky" }
             alert("组件钩子后被调用");
             alert(JSON.stringify(this.$data));
+            alert(this.$options.customOption);
         }
     })
 
